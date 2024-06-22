@@ -12,6 +12,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        service: 
+          - BIS/nest-bis/bis-service
+          - CRM/nest-crm/crm-service
+          - ERP/nest-erp/erp-service
+          - TMS/nest-tms/tms-service
+          - WMS/IMS/nest-ims/ims-service
+          - WMS/OMS/nest-oms/oms-service
+          - WMS/WO/nest-wo/wo-service
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -23,11 +34,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./BIS/nest-bis/bis-service
+        working-directory: ${{ matrix.service }}
 
       - name: Run tests
         run: npm test
-        working-directory: ./BIS/nest-bis/bis-service
+        working-directory: ${{ matrix.service }}
 
   deploy:
     needs: build
